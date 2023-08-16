@@ -1,0 +1,9 @@
+{{ if isset .Params "source" }}
+<a href="{{ .Params.source }}">
+    <div style="text-align:center">
+        <i class="fab fab fa-github"></i>
+        <br />
+        {{ " Source" | markdownify }}
+    </div>
+</a>
+{{ end }}
