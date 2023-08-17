@@ -25,4 +25,32 @@
             text-align: center
         }
     }
+
+    .matrix {
+        position: relative;
+    }
+
+    .matrix:before,
+    .matrix:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        border: 1px solid #FFF;
+        width: 6px;
+        height: 100%;
+    }
+
+    .matrix:before {
+        left: -6px;
+        border-right: 0;
+    }
+
+    .matrix:after {
+        right: -6px;
+        border-left: 0;
+    }
 </style>
+
+{{ if .Params.latex }}
+{{ partial "katex.html" . }}
+{{ end }}
