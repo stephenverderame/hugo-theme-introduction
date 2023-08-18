@@ -68,6 +68,12 @@
     {{ end }}
     {{ end }}
 </div>
+<div class="container markdown top-pad">
+    {{ if .Params.toc }}
+    <h2>Contents</h2>
+    {{ .TableOfContents }}
+    {{ end}}
+</div>
 <!-- Begin blog post content -->
 <div class="container markdown top-pad">
     {{ .Content }}
