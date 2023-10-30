@@ -9102,13 +9102,13 @@ details[open] summary {
     padding: .25rem .5rem;
     border: 1px solid #e5e5e5;
     text-align: center;
-    background-color: #f7f7f7; }
+    background-color: #f7f7f700; }
   .markdown tbody tr:nth-child(odd) td,
   .markdown tbody tr:nth-child(odd) th {
-    background-color: #dedede; }
+    background-color: #dedede00; }
   .markdown tbody tr:nth-child(even) td,
   .markdown tbody tr:nth-child(even) th {
-    background-color: #f7f7f7; }
+    background-color: #f7f7f700; }
   .markdown code, .markdown pre {
     border-radius: 3px; }
   .markdown p > code, .markdown p > a > code {
