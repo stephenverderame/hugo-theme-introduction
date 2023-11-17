@@ -6,7 +6,7 @@
     <div class="section">
         <div class="columns is-multiline">
             {{ $numberOfPages := len .Pages}}
-            {{ range .Pages.ByPublishDate.Reverse }}
+            {{ range $index, $element := .Pages.ByPublishDate.Reverse }}
             {{ $width := "302x" }}
             {{ $columWidth := "is-one-third" }}
             {{ if .Site.Params.projects.useTwoColumns }}
@@ -14,19 +14,17 @@
             {{ $width = "490x" }}
             {{ end}}
             <div class="column {{ $columWidth }}">
-                <div class="card">
+                <div class="card" data-target="#project-{{ $index }}">
                     {{ if .Resources.ByType "image" }}
-                    <div class="card-image">
+                    <div class="card-image" style="cursor: pointer;">
                         <figure class="image is-3by2">
-                            <a
-                                href="{{ if .Params.external_link }}{{ .Params.external_link }}{{ else }}{{ .Permalink }}{{ end }}">
-                                {{ with .Resources.ByType "image" }}
-                                {{ range first 1 (sort . "Params.weight") }}
-                                {{ $image := .Resize $width }}
-                                <img src="{{ $image.Permalink }}" alt="{{ $image.Name }}">
-                                {{ end }}
-                                {{ end }}
-                            </a>
+                            {{ with .Resources.ByType "image" }}
+                            {{ range first 1 (sort . "Params.weight") }}
+                            {{ $image := .Resize $width }}
+                            <img src="{{ $image.Permalink }}" alt="{{ $image.Name }}" class="card-thumbnail project"
+                                style="max-width: 30vw">
+                            {{ end }}
+                            {{ end }}
                         </figure>
                     </div>
                     {{ end }}
@@ -35,8 +33,11 @@
                                 href="{{ if .Params.external_link }}{{ .Params.external_link }}{{ else }}{{ .Permalink }}{{ end }}">
                                 {{ .Title | markdownify }}
                             </a></h1>
+
                         {{ if .Params.project_timeframe }}
-                        <p class="fa-xs">{{ .Params.project_timeframe }}</p>
+                        <div class="card-content has-text-centered top-pad">
+                            <p class="fa-xs">{{ .Params.project_timeframe }}</p>
+                        </div>
                         {{ end }}
                     </div>
                 </div>
@@ -45,4 +46,63 @@
         </div>
     </div>
 </div>
+
+{{ range $index, $element := .Pages.ByPublishDate.Reverse }}
+{{ if not .Params.external_link }}
+<div class="modal" id="project-{{ $index }}">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="width: 50vw">
+        {{ with .Title }}
+        <header class="modal-card-header bottom-pad">
+            <h1 class="modal-card-title has-text-centered">{{ . }}</h1>
+        </header>
+        {{ end }}
+        <div style="display: table-row; width: 100%">
+            {{ if .Params.project_timeframe }}
+            <span class="fa-xs" style="display: table-cell; white-space: nowrap">
+                {{ .Params.project_timeframe }}
+            </span>
+            {{ end }}
+            <a href="{{ .RelPermalink }}" style="display: table-cell; text-align: right; width: 99%;">
+                {{ $linkText := "View Full Page" }}
+                {{ $linkText | markdownify }}
+            </a>
+        </div>
+        <br />
+        <section class="modal-card-body markdown">
+            {{ with .Resources.ByType "image" }}
+            {{ $moreThenOneImage := gt (len .) 1 }}
+            {{ if $moreThenOneImage }}
+            <div class="owl-carousel owl-theme">
+                {{ end }}
+                {{ range sort . "Params.weight" }}
+                {{ $image := .Resize "640x" }}
+                {{ if $moreThenOneImage }}
+                <div class="item">
+                    {{ end }}
+                    <img src="{{ $image.Permalink }}" class="img-responsive" alt="{{ $image.Name }}" loading="lazy">
+                    {{ if $moreThenOneImage }}
+                </div>
+                {{ end }}
+                {{ end }}
+                {{ if $moreThenOneImage }}
+            </div>
+            {{ end }}
+            {{ end }}
+            {{ .Content }}
+            {{ partial "projects/source-link.html" . }}
+        </section>
+    </div>
+    <button class="modal-close is-large" aria-label="close" data-target="#project-{{ $index }}"></button>
+</div>
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{ define "customCSS" }}
+{{ partial "css/owlCarousel.html" . }}
+{{ end }}
+
+{{ define "customScripts" }}
+{{ partial "js/owlCarousel.html" . }}
 {{ end }}

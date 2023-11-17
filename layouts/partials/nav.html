@@ -4,6 +4,7 @@
     <hr>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         {{ $isHome := .Page.IsHome }}
+        {{ $notExp := ne .Page.Name "Experience" }}
         <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false" >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -14,21 +15,21 @@
             {{ if .Site.Menus.main }}
             {{ range .Site.Menus.main }}
             {{ if .HasChildren }}
-            <a class="navbar-item"  href="{{ .URL }}">
+            <a class="navbar-item"  href="{{ .Permalink }}">
                 {{ .Pre }}
                 {{ .Name }}
                 {{ .Post }}
             </a>
             {{ range .Children }}
             <!-- TODO: style children diffrent then parents-->
-            <a class="navbar-item" href="{{ .URL }}">
+            <a class="navbar-item" href="{{ .Permalink }}">
                 {{ .Pre }}
                 {{ .Name }}
                 {{ .Post }}
             </a>
             {{ end }}
             {{ else }}
-            <a class="navbar-item" href="{{ .URL }}">
+            <a class="navbar-item" href="{{ .Permalink }}">
                 {{ .Pre }}
                 {{ .Name }}
                 {{ .Post }}
@@ -37,9 +38,7 @@
             {{ end }}
             {{ else }}
             <!-- use default menu -->
-            {{ if not $isHome }}
             <a class="navbar-item" href="{{ "" | relLangURL }}">{{ i18n "nav_main" . }}</a>
-            {{ end }}
 
             {{ with .Site.GetPage "/home" }}
             {{ $pages := .Resources.ByType "page" }}
@@ -56,9 +55,6 @@
             {{ if ne .Name "contact.md" }}
             {{ if eq (os.Stat .File.Dir).Name "projects" }}
                 <!-- Now for some cool projects -->
-                {{ if $isHome }}
-                <a class="navbar-item" href="{{ printf "#%s" ( .Title | urlize) | relLangURL }}">{{ .Title | markdownify }}</a>
-                {{ else }}
                 {{ $pageIsInProjects := eq $.Page.Section "projects"}}
                 {{ if not (and $pageIsInProjects (eq $.Page.Kind "section")) }}
                   <a class="navbar-item" href="{{ .Permalink }}">
@@ -71,12 +67,8 @@
                   {{ end }}
                   </a>
                 {{ end }}
-                {{ end }}
             {{ else if eq (os.Stat .File.Dir).Name "blog" }}
                 <!-- Let`s show some blog posts -->
-                {{ if $isHome }}
-                <a class="navbar-item" href="{{ printf "#%s" ( .Title | urlize) | relLangURL }}">{{ .Title | markdownify }}</a>
-                {{ else }}
                 {{ $pageIsInBlog := eq $.Page.Section "blog"}}
                 {{ if not (and $pageIsInBlog (eq $.Page.Kind "section")) }}
                   <a class="navbar-item" href="{{ .Permalink }}">
@@ -87,9 +79,8 @@
                   {{ end }}
                   </a>
                 {{ end }}
-                {{ end }}
             {{ else }}
-            <a class="navbar-item" href="{{ if $isHome }}#{{ .File.TranslationBaseName }}{{ else }}{{ printf "#%s" (.File.TranslationBaseName | urlize) | relLangURL }}{{ end }}">{{ .Title | markdownify }}</a>
+            <a class="navbar-item" href="{{ printf "#%s" (.File.TranslationBaseName | urlize) | relLangURL }}">{{ .Title | markdownify }}</a>
             {{ end }}
             {{ end }}
             {{ end }}
@@ -107,6 +98,13 @@
             {{ end }}
             {{ end }}
 
+            {{ end }}
+            <!-- Really Hacky, manually add page -->
+            {{ if $notExp }}
+            <a class="navbar-item" href="/experience">{{ "Experience" | markdownify }}</a>
+            {{ end }}
+
+            {{ if eq $.Page.Section "blog" }}
             {{ if and .Site.Params.showRSSButton .Site.RSSLink }}
             <a class="navbar-item" href="{{ .Site.RSSLink }}"><i class="fas fa-rss"></i></a>
             {{ end }}

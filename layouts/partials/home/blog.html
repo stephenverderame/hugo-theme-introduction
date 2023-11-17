@@ -3,7 +3,17 @@
     <!-- Begin Blog container -->
     <div class="container">
         {{ if .Site.Params.home.showLatest | default true }}
-        <h2 class="title is-2 has-text-centered">{{ i18n "index_blog_latestPosts" . }}</h2>
+        <div style="display: flex; align-items: center; justify-content: center; padding-bottom: 5%">
+            <div>
+                <h2 class="title is-2 has-text-centered">{{ i18n "index_blog_latestPosts" . }}</h2>
+            </div>
+            <div style="padding-left: 2%">
+                <a href="/index.xml" target="_blank">
+                    <i class="fas fas fa-rss">
+                    </i>
+                </a>
+            </div>
+        </div>
         {{ range first .Site.Params.home.numberOfPostsToShow .Pages.ByPublishDate.Reverse }}
         <div class="summary">
             {{ if .Params.date }}{{ .Date.Format (.Site.Params.dateFormat | default ":date_medium") }}{{ end }}
