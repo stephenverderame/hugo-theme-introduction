@@ -38,7 +38,10 @@
             {{ end }}
             {{ else }}
             <!-- use default menu -->
+
+            {{ if not $isHome }}
             <a class="navbar-item" href="{{ "" | relLangURL }}">{{ i18n "nav_main" . }}</a>
+            {{ end }}
 
             {{ with .Site.GetPage "/home" }}
             {{ $pages := .Resources.ByType "page" }}
@@ -80,7 +83,7 @@
                   </a>
                 {{ end }}
             {{ else }}
-            <a class="navbar-item" href="{{ printf "#%s" (.File.TranslationBaseName | urlize) | relLangURL }}">{{ .Title | markdownify }}</a>
+            <!-- <a class="navbar-item" href="{{ printf "#%s" (.File.TranslationBaseName | urlize) | relLangURL }}">{{ .Title | markdownify }}</a> -->
             {{ end }}
             {{ end }}
             {{ end }}
