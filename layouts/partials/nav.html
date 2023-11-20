@@ -104,12 +104,14 @@
             {{ end }}
             <!-- Really Hacky, manually add page -->
             {{ if $notExp }}
-            <a class="navbar-item" href="/experience">{{ "Experience" | markdownify }}</a>
+            <a class="navbar-item" href="/cv">{{ "CV" | markdownify }}</a>
             {{ end }}
 
             {{ if eq $.Page.Section "blog" }}
-            {{ if and .Site.Params.showRSSButton .Site.RSSLink }}
-            <a class="navbar-item" href="{{ .Site.RSSLink }}"><i class="fas fa-rss"></i></a>
+            {{ if .Site.Params.showRSSButton }}
+            {{ with .OutputFormats.Get "rss" -}}
+            <a class="navbar-item" href="{{ .Permalink }}" target="_blank"><i class="fas fa-rss"></i></a>
+            {{ end }}
             {{ end }}
             {{ end }}
         </div>
