@@ -21,8 +21,7 @@
                             {{ with .Resources.ByType "image" }}
                             {{ range first 1 (sort . "Params.weight") }}
                             {{ $image := .Resize $width }}
-                            <img src="{{ $image.Permalink }}" alt="{{ $image.Name }}" class="card-thumbnail project"
-                                style="max-width: 30vw">
+                            <img src="{{ $image.Permalink }}" alt="{{ $image.Name }}" class="card-thumbnail project">
                             {{ end }}
                             {{ end }}
                         </figure>
@@ -36,7 +35,7 @@
 
                         {{ if .Params.project_timeframe }}
                         <div class="card-content has-text-centered top-pad">
-                            <p class="fa-xs">{{ .Params.project_timeframe }}</p>
+                            <p>{{ .Params.project_timeframe }}</p>
                         </div>
                         {{ end }}
                     </div>

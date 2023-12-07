@@ -14,10 +14,12 @@
             </a>
         </h3>
         <div class="markdown">
-            {{ .Summary }}
-            {{ if .Truncated }}
-            <a href="{{ .Permalink }}">{{ i18n "index_blog_readMore" . }}</a>
-            {{ end }}
+            <p>
+                {{ .Summary }}
+                {{ if .Truncated }}
+                <a href="{{ .Permalink }}">{{ i18n "index_blog_readMore" . }}</a>
+                {{ end }}
+            </p>
         </div>
         <div>
             {{ partial "blog/tags.html" . }}
